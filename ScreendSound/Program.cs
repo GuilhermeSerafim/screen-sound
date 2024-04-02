@@ -1,19 +1,7 @@
 ﻿using System;
-
-string mensagemDeBoasVindas = "Bem vindo ao Screend Sound\n";
-// Um Dictionary armazena pares de chave-valor, onde cada chave é única e associada a um valor.
-Dictionary<int, string> listaDasBandas = new Dictionary<int, string>()
+void TelaInicial()
 {
-    {0, "U2"},
-    {1, "The Beatles"},
-    {2, "Calypso"},
-    {3, "AC/DC"},
-    {4, "Guns N' Roses"}
-};
-
-
-void ExibirLogo()
-{
+    Console.WriteLine("Bem vindo ao Screend Sound\n");
     Console.WriteLine(@"
         ░██████╗░█████╗░██████╗░███████╗███████╗███╗░░██╗  ░██████╗░█████╗░██╗░░░██╗███╗░░██╗██████╗░
         ██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝████╗░██║  ██╔════╝██╔══██╗██║░░░██║████╗░██║██╔══██╗
@@ -24,25 +12,51 @@ void ExibirLogo()
     ");
 }
 
-void ExibirMensagemDeBoasVindas()
+// Bandas iniciais
+Dictionary<int, string> listaDasBandas = new Dictionary<int, string>()
 {
-    Console.Write(mensagemDeBoasVindas);
+    {0, "U2"},
+    {1, "The Beatles"},
+    {2, "Calypso"},
+    {3, "AC/DC"},
+    {4, "Guns N' Roses"}
+};
+
+void ExibirBandasInicialmenteDisponiveis()
+{
+    Console.WriteLine("\n\nBandas inicialmente disponiveis: ");
+    foreach (var banda in listaDasBandas)
+    {
+        Console.WriteLine($"{banda.Key} - {banda.Value}");
+    }
 }
 
-int EscolhaABanda(int home)
+int Menu()
 {
-    // Opção invalida
+    Console.WriteLine("\nDigite 1 se para escolher um banda disponível");
+    Console.WriteLine("Digite 2 se deseja registrar uma banda");
+    Console.WriteLine("Digite 3 para encerrar");
+    string escolhaHome = Console.ReadLine();
+    int home = int.Parse(escolhaHome);
+
+    return home;
+}
+
+// Toda parte de registro ou escolha de banda, com base no Menu
+int ListarEscolherBanda(int home)
+{
+    // Opção invalida por padrão (se não for escolhida nenhuma opção corresponde a 1,2,3)
     int opcaoEscolhidaNumerica = -4;
     if (home == 1)
     {
-        Console.WriteLine("Bandas: ");
+        Console.WriteLine("\nBandas: ");
         foreach (var banda in listaDasBandas)
         {
             Console.WriteLine($"{banda.Key} - {banda.Value}");
         }
         Console.Write("\nDigite o número da sua banda: ");
         string opcaoEscolhida = Console.ReadLine()!;
-        opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida); // Coloquei negativo por que aqui pode ser 2 ou 3
+        opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida); // Coloquei negativo porque na opção escolhida pode dar conflito
     }
     else if (home == 2) // Escolha
     {
@@ -65,6 +79,7 @@ int EscolhaABanda(int home)
             Console.WriteLine("Encerrando...");
             break;
         default:
+            // Está condição está tratando as novas opções de banda 
             if (listaDasBandas.ContainsKey(opcaoEscolhidaNumerica))
             {
                 Console.WriteLine($"Você escolheu a banda {listaDasBandas[opcaoEscolhidaNumerica]}");
@@ -92,33 +107,16 @@ void RegistrarBanda(string bandaRegistro)
         Console.WriteLine($"{banda.Key} - {banda.Value}");
     }
     Thread.Sleep(1000);
-    int resultadoHome = Home(); // Para menu da home 
-    EscolhaABanda(resultadoHome); // Para escolher novamente 
+    int resultadoHome = Menu(); // Para menu da home 
+    ListarEscolherBanda(resultadoHome); // Para escolher novamente 
 }
 
-int Home()
-{
-
-    Console.WriteLine("\nDigite 1 se para escolher um banda disponível");
-    Console.WriteLine("Digite 2 se deseja registrar uma banda");
-    Console.WriteLine("Digite 3 para encerrar");
-    string escolhaHome = Console.ReadLine();
-    int home = int.Parse(escolhaHome);
-
-    return home;
-}
 void AoIniciarOPrograma()
 {
-    ExibirMensagemDeBoasVindas();
-    ExibirLogo();
-    Console.WriteLine("\n\nBandas inicialmente disponiveis: ");
-    foreach (var banda in listaDasBandas)
-    {
-        Console.WriteLine($"{banda.Key} - {banda.Value}");
-    }
-    Console.WriteLine("\n\nCrie sua banda ou entre em uma!");
-    int registraBanda = Home(); // Armazena o resultado de Home() em uma variável
-    EscolhaABanda(registraBanda); // Chama EscolhaABanda() com o resultado de Home()
+    TelaInicial();
+    ExibirBandasInicialmenteDisponiveis();
+    int registraBanda = Menu(); // Armazena o resultado de Home() em uma variável
+    ListarEscolherBanda(registraBanda); // Chama EscolhaABanda() com o resultado de Home()
 
 }
 
