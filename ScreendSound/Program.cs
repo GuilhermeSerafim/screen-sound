@@ -1,7 +1,112 @@
 ﻿using System;
+
+Dictionary<string, List<int>> bandasRegistradas = new Dictionary<string, List<int>>();
+// Bandas com notas iniciais
+bandasRegistradas.Add("AC/DC", new List<int>
+{
+    10,
+    10,
+    9,
+});
+bandasRegistradas.Add("Iron Maiden", new List<int>
+{
+    10,
+});
+bandasRegistradas.Add("Guns Roses", new List<int>
+{ }); // Sem notas
+
+
+
+void ExibirMenu()
+{
+    Console.WriteLine("\nDigite 1 para registrar uma banda");
+    Console.WriteLine("Digite 2 para mostrar todas as bandas");
+    Console.WriteLine("Digite 3 para avaliar uma banda");
+    Console.WriteLine("Digite 4 para exibir a média de uma banda");
+    Console.WriteLine("Digite -1 para sair\n");
+
+    string opcaoEscolhida = Console.ReadLine();
+    int opcaoEscolhidaConvertida = int.Parse(opcaoEscolhida);
+    {
+        switch (opcaoEscolhidaConvertida)
+        {
+            case 1:
+                Console.WriteLine("Digite o nome da banda que quer registrar");
+                RegistrarBanda();
+                break;
+            case 2:
+                ExibirBandas();
+                break;
+            case 3:
+                AvaliarBanda();
+                break;
+            case -1:
+                Console.WriteLine("Encerrando...");
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void RegistrarBanda()
+{
+    string registroDaBanda = Console.ReadLine();
+    bandasRegistradas.Add(registroDaBanda, new List<int> { }); // Como estamos apenas adicionando a banda, poassamos a nota como um "objeto vazio"
+    Console.WriteLine("Banda registrada com sucesso");
+    Thread.Sleep(1000);
+    Console.Clear();
+    TelaInicial();
+}
+
+void ExibirBandas()
+{
+    Console.WriteLine("\nBandas:");
+    foreach (var item in bandasRegistradas)
+    {
+        Console.WriteLine(item.Key);
+    }
+    Thread.Sleep(3000); // Para visualizar as bandas
+    Console.Clear();
+    ExibirMenu();
+}
+
+void AvaliarBanda()
+{
+    Console.WriteLine("Qual a banda que você deseja avaliar?");
+    string bandaASerAvaliada = Console.ReadLine();
+    // O método ContainsKey() retorna true se a chave existir no dicionário e false caso contrário.
+    if (bandasRegistradas.ContainsKey(bandaASerAvaliada))
+    {
+        Console.WriteLine("Dê uma nota de 0 a 10 para esta banda: ");
+        string nota = Console.ReadLine();
+        int notaConvertida = int.Parse(nota);
+        bandasRegistradas[bandaASerAvaliada].Add(notaConvertida);
+        Console.Clear();
+        Console.WriteLine("Nota atribuida com sucesso!\n");
+        Console.WriteLine($"Notas da banda {bandaASerAvaliada}: ");
+        foreach (var notas in bandasRegistradas[bandaASerAvaliada])
+        {
+            Console.WriteLine(notas + "\n");
+        }
+        Console.WriteLine("Digite uma tecla para voltar à tela inicial");
+        Console.ReadKey();
+        TelaInicial();
+    }
+    else
+    {
+        Console.WriteLine($"A banda {bandaASerAvaliada} não foi encontrada");
+        Console.WriteLine("Digite uma tecla para voltar à tela inicial");
+        Console.ReadKey();
+        TelaInicial();
+
+    }
+
+}
+
 void TelaInicial()
 {
-    Console.WriteLine("Bem vindo ao Screend Sound\n");
+    Console.WriteLine("Sinta a energia do rock em cada nota \n");
     Console.WriteLine(@"
         ░██████╗░█████╗░██████╗░███████╗███████╗███╗░░██╗  ░██████╗░█████╗░██╗░░░██╗███╗░░██╗██████╗░
         ██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝████╗░██║  ██╔════╝██╔══██╗██║░░░██║████╗░██║██╔══██╗
@@ -10,114 +115,8 @@ void TelaInicial()
         ██████╔╝╚█████╔╝██║░░██║███████╗███████╗██║░╚███║  ██████╔╝╚█████╔╝╚██████╔╝██║░╚███║██████╔╝
         ╚═════╝░░╚════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░╚══╝  ╚═════╝░░╚════╝░░╚═════╝░╚═╝░░╚══╝╚═════╝░
     ");
+    ExibirMenu();
 }
 
-// Bandas iniciais
-Dictionary<int, string> listaDasBandas = new Dictionary<int, string>()
-{
-    {0, "U2"},
-    {1, "The Beatles"},
-    {2, "Calypso"},
-    {3, "AC/DC"},
-    {4, "Guns N' Roses"}
-};
-
-void ExibirBandasInicialmenteDisponiveis()
-{
-    Console.WriteLine("\n\nBandas inicialmente disponiveis: ");
-    foreach (var banda in listaDasBandas)
-    {
-        Console.WriteLine($"{banda.Key} - {banda.Value}");
-    }
-}
-
-int Menu()
-{
-    Console.WriteLine("\nDigite 1 se para escolher um banda disponível");
-    Console.WriteLine("Digite 2 se deseja registrar uma banda");
-    Console.WriteLine("Digite 3 para encerrar");
-    string escolhaHome = Console.ReadLine();
-    int home = int.Parse(escolhaHome);
-
-    return home;
-}
-
-// Toda parte de registro ou escolha de banda, com base no Menu
-int ListarEscolherBanda(int home)
-{
-    // Opção invalida por padrão (se não for escolhida nenhuma opção corresponde a 1,2,3)
-    int opcaoEscolhidaNumerica = -4;
-    if (home == 1)
-    {
-        Console.WriteLine("\nBandas: ");
-        foreach (var banda in listaDasBandas)
-        {
-            Console.WriteLine($"{banda.Key} - {banda.Value}");
-        }
-        Console.Write("\nDigite o número da sua banda: ");
-        string opcaoEscolhida = Console.ReadLine()!;
-        opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida); // Coloquei negativo porque na opção escolhida pode dar conflito
-    }
-    else if (home == 2) // Escolha
-    {
-        opcaoEscolhidaNumerica = -2;
-    }
-    else if (home == 3) // Exit
-    {
-        opcaoEscolhidaNumerica = -3;
-    }
-
-    switch (opcaoEscolhidaNumerica)
-    {
-        case -2:
-            Console.Clear();
-            Console.Write("Digite o nome da banda que deseja registrar: ");
-            string bandaRegistro = Console.ReadLine();
-            RegistrarBanda(bandaRegistro);
-            break;
-        case -3:
-            Console.WriteLine("Encerrando...");
-            break;
-        default:
-            // Está condição está tratando as novas opções de banda 
-            if (listaDasBandas.ContainsKey(opcaoEscolhidaNumerica))
-            {
-                Console.WriteLine($"Você escolheu a banda {listaDasBandas[opcaoEscolhidaNumerica]}");
-            }
-            else
-            {
-                Console.WriteLine("Opção inválida");
-            }
-            break;
-    }
-    return opcaoEscolhidaNumerica;
-}
-
-void RegistrarBanda(string bandaRegistro)
-{
-    // Adiciona a nova banda com o próximo número de identificação disponível
-    int novoIndice = listaDasBandas.Count;
-    listaDasBandas.Add(novoIndice, bandaRegistro);
-    Console.WriteLine("Banda adicionada!");
-    Thread.Sleep(1000);
-    Console.Clear();
-    Console.WriteLine("Bandas disponíveis: ");
-    foreach (var banda in listaDasBandas)
-    {
-        Console.WriteLine($"{banda.Key} - {banda.Value}");
-    }
-    Thread.Sleep(1000);
-    int resultadoHome = Menu(); // Para menu da home 
-    ListarEscolherBanda(resultadoHome); // Para escolher novamente 
-}
-
-void AoIniciarOPrograma()
-{
-    TelaInicial();
-    ExibirBandasInicialmenteDisponiveis();
-    int registraBanda = Menu(); // Armazena o resultado de Home() em uma variável
-    ListarEscolherBanda(registraBanda); // Chama EscolhaABanda() com o resultado de Home()
-
-}
-
-AoIniciarOPrograma();
+// Ao iniciar o programa
+TelaInicial();
