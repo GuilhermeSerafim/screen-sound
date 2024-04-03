@@ -15,6 +15,10 @@ Para começar a usar o Screen Sound, siga estes passos:
 2. **Abra o programa na IDE** de sua preferência.
 3. **Execute o console** de uma aplicação C# para interagir com o programa.
 
+## Print
+![image](https://github.com/GuilhermeSerafim/screen-sound/assets/129989701/9da2dd88-7782-44bc-a0d5-5e4acbad1475)
+
+
 ## Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](https://choosealicense.com/licenses/mit/) para mais detalhes.
